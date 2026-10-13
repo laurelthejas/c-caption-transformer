@@ -1,0 +1,15 @@
+# Python / Jupyter
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+
+# Model checkpoints live on Google Drive (MyDrive/c_caption_transformer/<RUN_NAME>/), not in git
+*.pt
+*.pth
+
+# Editor / OS
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
