@@ -162,6 +162,8 @@ The final layer outputs a raw score (a logit) for each of the 92 characters, and
 | **After softmax** | 0.66 | 0.24 | 0.10 |
 | **After softmax, temperature 0.7** | 0.77 | 0.18 | 0.05 |
 
+For example, after `int mai`, suppose the next characters `n`, `l` and `d` get the scores above. Softmax gives `n` a 66% chance of being picked, or 77% at the notebook's temperature of 0.7, so the model will most likely write `main`.
+
 Softmax is used in three places:
 
 - **Attention:** `scaled_dot_product_attention` applies it to the query-key match scores, so each position's attention weights add up to 1.
