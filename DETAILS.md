@@ -152,6 +152,34 @@ LayerNorm keeps the numbers in a stable range, and the “x +” parts (residual
 | **DROPOUT** | 0.2 | Switches off 20% of signals during training, to reduce overfitting (memorising) |
 | **Parameters** | ≈ 11.1 million | All the learned numbers together |
 
+### 6.4 Softmax: from scores to probabilities
+
+The final layer outputs a raw score (a logit) for each of the 92 characters, and these scores can be any number. Softmax converts them into probabilities that are positive and add up to 1: raise e to the power of each score, then divide each result by their total.
+
+| | Character A | Character B | Character C |
+|---|---|---|---|
+| **Raw score** | 2.0 | 1.0 | 0.1 |
+| **After softmax** | 0.66 | 0.24 | 0.10 |
+| **After softmax, temperature 0.7** | 0.77 | 0.18 | 0.05 |
+
+Softmax is used in three places:
+
+- **Attention:** `scaled_dot_product_attention` applies it to the query-key match scores, so each position's attention weights add up to 1.
+- **Training:** `F.cross_entropy` applies it internally as log-softmax, which is why the model outputs raw scores and has no softmax layer of its own.
+- **Generation:** temperature divides the scores before softmax, and top-k sets the excluded scores to minus infinity, which gives them a probability of 0.
+
+*From the ✍️ cell: choosing the next character*
+
+```python
+nxt = torch.multinomial(F.softmax(logits, dim=-1), num_samples=1)
+```
+
+### 6.5 LayerNorm and batch normalization
+
+This model uses LayerNorm, not batch normalization (BatchNorm). BatchNorm rescales each feature using its mean and variance across the examples in a batch, and stores running averages to use at inference. It is common in image models, but its behaviour depends on the batch size and differs between training and inference.
+
+LayerNorm computes the mean and variance from the 384 numbers at each position, independently of the rest of the batch. It therefore behaves the same way during training (16 windows) and generation (one sequence).
+
 ## 🚀 7. Training: the guessing game
 
 Every training step does four things:
