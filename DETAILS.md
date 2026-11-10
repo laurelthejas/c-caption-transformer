@@ -233,11 +233,13 @@ def ask(question):
 
 After trying the model, you can mark its last program 👍 Correct or 👎 Wrong and paste the correct code (the 📝 cell). The code is checked with gcc and saved to Google Drive. Ticking LEARN_NOW in the 🎓 cell fine-tunes a **copy** of the model for about 300 steps on your corrections mixed with normal training data, and shows the answer before and after. A few corrections teach that caption and close rewordings, not brand-new skills.
 
-## 💻 10. Running it on a CPU
+## 💻 10. Running it on a CPU: the app
 
-Training needs a GPU, but the trained checkpoint (`best.pt`, saved by your training run) is small enough to run on a normal laptop CPU. One trick makes that fast:
+Training needs a GPU, but the trained checkpoint (`best.pt`, saved by your training run) is small enough to run on a normal laptop CPU. The Streamlit app, `app.py`, does this: the README shows how to start it. One trick makes it fast:
 
-> **The KV cache:** the notebook's generate() re-reads the whole text for every new character, which is fine on a GPU but takes minutes per program on a CPU. Remembering the attention keys and values that were already computed turns each new character into one small step. The output is identical, and a typical program takes about 5–10 seconds on a laptop.
+> **The KV cache:** the notebook's generate() re-reads the whole text for every new character, which is fine on a GPU but takes minutes per program on a CPU. Remembering the attention keys and values that were already computed turns each new character into one small step. `c_caption_model.py` does this, and a test confirmed that with the same seed it writes exactly the same text as the notebook's method, including after the text grows past the model's 1,024-character view.
+
+The app's three modes use the notebook's three prompt formats, and its settings are the notebook's: temperature, top-k and **Tries**, which retries until gcc accepts a program. The model classes in `c_caption_model.py` are exact copies of the notebook's, so a checkpoint from any training run loads in the app.
 
 ## 📊 11. Results and limits
 
@@ -249,6 +251,7 @@ Training needs a GPU, but the trained checkpoint (`best.pt`, saved by your train
 | **New task (“Find the second largest number”, “Armstrong number”)** | ❌ Writes the nearest familiar program instead (find the largest, prime check) |
 
 - The model imitates patterns. For familiar tasks it writes valid, sensible C; for new tasks it reuses the nearest pattern.
+- Why it answers this way: the model learned from 10,000 programs built from 36 task templates, so for a request outside those patterns, such as adding *and* multiplying in one program, it writes the closest program it has seen. Models such as GPT-2 use the same kind of transformer, but learn from millions of varied documents written by people, with over ten times as many parameters, which is what lets them handle new wordings far better.
 - Explanations can be confidently wrong, and numbers can disagree between the plan, the code and the explanation (for example a binary search on an array that is not sorted).
 - The key takeaway: a model this small learns patterns, not understanding. Bigger models and more varied data push the limits further, but reading what a model writes always matters.
 

@@ -36,6 +36,10 @@ on a T4 GPU, and it learns three things from one text format:
 | 📄&nbsp;`c_caption_dataset.txt` | The dataset (for the `c_captions_v3` run): 10,000 programs from 36 task families, each with a step-by-step plan and an English explanation, plus 876 Q&A documents on 73 C topics |
 | 🛠️&nbsp;`make_c_dataset.py` | The generator. `python make_c_dataset.py` recreates `c_caption_dataset.txt` exactly |
 | 📘&nbsp;`DETAILS.md` | A step-by-step explanation of the notebook and code |
+| 🖥️&nbsp;`app.py` | A Streamlit app to use a trained model on your own computer |
+| 🧩&nbsp;`c_caption_model.py` | The notebook's model, with faster generation, used by the app |
+| 📦&nbsp;`requirements.txt` | The libraries the app needs |
+| 🔒&nbsp;`.streamlit/config.toml` | Keeps the app reachable only from your own computer |
 
 📌 The programs include functions with 3–4 parameters, results returned through pointer parameters or in a struct,
 and different declaration styles (`int a = 1, b = 2;`, `int *p, *q;`, declare first and assign later).
@@ -72,6 +76,28 @@ other new tasks.
 `latest.pt` after a disconnect. The model uses `BLOCK_SIZE = 1024`: a typical program with its plan is about 870
 characters, and about three quarters of them fit in the model's view completely.
 
+## 🖥️ Use the app
+
+The app runs a trained model on your own computer, on a CPU or a GPU. It can write a program from a caption, explain
+C code, or answer a question, with sample inputs including the six test captions that are not in the training data.
+
+1. 📥 Get the code and install the libraries:
+   ```
+   git clone https://github.com/laurelthejas/c-caption-transformer.git
+   cd c-caption-transformer
+   python -m venv .venv
+   .venv\Scripts\activate          (macOS or Linux: source .venv/bin/activate)
+   pip install -r requirements.txt
+   ```
+2. 💾 Download `best.pt` from `MyDrive/c_caption_transformer/c_captions_v3/` in Google Drive, and save it in the repo
+   as `weights/best.pt`. The `weights/` folder is ignored by git.
+3. ▶️ Run `streamlit run app.py` and open http://127.0.0.1:8502.
+
+⏱️ On an 8-thread laptop CPU, a program took about 5 seconds, and an explanation or an answer about 1 second.
+
+✅ If gcc is installed, the app checks each program and retries up to the **Tries** setting until one compiles.
+Without gcc, it says so and skips the check.
+
 ## 📊 Results
 
 📉 Validation loss fell steadily to about 0.06, with training and validation loss close together. In tests:
@@ -85,6 +111,10 @@ characters, and about three quarters of them fit in the model's view completely.
 
 ## 📝 Notes
 
+- 💬 Why it answers this way: the model learned from 10,000 programs built from 36 task templates, so for a request
+  outside those patterns, such as adding *and* multiplying in one program, it writes the closest program it has seen.
+  Models such as GPT-2 use the same kind of transformer, but learn from millions of varied documents written by
+  people, with over ten times as many parameters, which is what lets them handle new wordings far better.
 - 🔍 The model imitates patterns from its training data. It writes valid C for familiar tasks, but for new tasks it
   usually reuses the nearest pattern, so read what it produces. Explanations and answers can be confidently wrong in
   the same way, especially for questions outside the 73 Q&A topics. "Compiles" does not mean "correct", and numbers

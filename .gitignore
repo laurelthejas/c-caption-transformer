@@ -7,6 +7,8 @@ __pycache__/
 # Model checkpoints live on Google Drive (MyDrive/c_caption_transformer/<RUN_NAME>/), not in git
 *.pt
 *.pth
+weights/
+.streamlit/secrets.toml
 
 # Editor / OS
 .vscode/
