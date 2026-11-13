@@ -278,3 +278,11 @@ The app's three modes use the notebook's three prompt formats, and its settings 
 | **Checkpoint** | A saved copy of the model's numbers (best.pt, latest.pt). |
 | **Temperature / top-k** | Settings that control how adventurous the model's choices are. |
 | **Fine-tuning** | Training an already trained model a little more on new examples. |
+
+## 📜 14. Credits
+
+The model follows published work, with thanks to its authors:
+
+- **Transformer:** Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Łukasz Kaiser and Illia Polosukhin. [*Attention Is All You Need*](https://arxiv.org/abs/1706.03762). NeurIPS 2017. The attention mechanism and the transformer block used here.
+- **Decoder-only language models:** Alec Radford, Karthik Narasimhan, Tim Salimans and Ilya Sutskever. [*Improving Language Understanding by Generative Pre-Training*](https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf). OpenAI, 2018. The GPT design of training a transformer to predict the next token.
+- **Tools:** PyTorch for the model and training, GCC for checking the programs, and Streamlit for the app.
