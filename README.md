@@ -132,8 +132,11 @@ third-party files. At runtime the notebook uses PyTorch, matplotlib and gcc (pre
 `USE_SHAKESPEARE` is on, downloads [Tiny Shakespeare](https://github.com/karpathy/char-rnn) (public domain text).
 These are not included here and keep their own licenses.
 
-## 🔗 Related project
+## 🔗 Related projects
 
-[🎨 Diffusion Models: Image Generation and Captioning](https://github.com/laurelthejas/diffusion-models-image-generation-and-captioning):
-fine-tunes Stable Diffusion for text-to-image and image-to-image, and trains a small text-to-image diffusion model
-from scratch on Fashion-MNIST.
+- [🎨 Diffusion Models: Image Generation and Captioning](https://github.com/laurelthejas/diffusion-models-image-generation-and-captioning):
+  fine-tunes Stable Diffusion for text-to-image and image-to-image, and trains a small text-to-image diffusion model
+  from scratch on Fashion-MNIST.
+- [🧩 Autoencoders: Feature Extraction, Colorization and Enhancement](https://github.com/laurelthejas/autoencoders-recognize-colorize-enhance):
+  three image autoencoders trained from scratch on CIFAR-10, which recognize objects and find similar images, add
+  color to grayscale images, and remove noise and blur.
