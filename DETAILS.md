@@ -203,7 +203,7 @@ def lr_at(step):
     return MIN_LR + 0.5 * (LEARNING_RATE - MIN_LR) * (1 + math.cos(math.pi * progress))
 ```
 
-The real run trained for 8,000 steps on a T4 GPU. The best checkpoint's validation loss was 0.053, with training and validation loss close together: a sign of learning rather than memorising. The 📉 cell draws both curves; if they drift apart, the model is memorising.
+The real run trained for 8,000 steps on a T4 GPU. The best checkpoint's validation loss was 0.053, with training and validation loss close together, so the model did not memorise the training programs. The validation programs come from the same templates, though, so this shows the model handles new variations of familiar tasks, not new tasks (see section 11). The 📉 cell draws both curves; if they drift apart, the model is memorising.
 
 ## ✍️ 8. Using the model: writing one character at a time
 
