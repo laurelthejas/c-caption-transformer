@@ -1,6 +1,6 @@
 # 📖🖋️ C-Caption Transformer: Learns C Programming Language and English Captions
 
-A small transformer that learns from scratch to write and explain simple C programs.
+A decoder-only transformer, built and trained from scratch, that writes short C programs from English captions, plans its steps, explains code and answers questions about C.
 
 It is a character-level, decoder-only transformer (multi-head self-attention, about 11M parameters) trained in Google Colab
 on a T4 GPU, and it learns three things from one text format:
@@ -22,11 +22,11 @@ on a T4 GPU, and it learns three things from one text format:
 // END
 ```
 
-> 🌱 NOTE: This project explores the workings of a transformer by building and training a small one end to end. For real-world applications, the usual approach is to start from a large pretrained model and adapt it through fine-tuning, prompting or RAG.
+> 🎯 SCOPE: Every part is implemented and trained here end to end, from the dataset generator and tokenizer to the attention layers, training loop, feedback fine-tuning and app, at a scale that trains on a free T4 GPU. Production systems usually start from a large pretrained model and adapt it through fine-tuning, prompting or RAG.
 
 > ☁️ Google Colab provides the GPU for training; Google Drive stores the dataset and checkpoints.
 
-> 📘 New to transformers? [DETAILS.md](DETAILS.md) explains the notebook and code step by step: the dataset, the model, training, generation and a glossary.
+> 📘 [DETAILS.md](DETAILS.md) explains the notebook and code step by step: the dataset, the model, training, generation and a glossary.
 
 ## 📁 Files
 
@@ -44,7 +44,7 @@ on a T4 GPU, and it learns three things from one text format:
 📌 The programs include functions with 3–4 parameters, results returned through pointer parameters or in a struct,
 and different declaration styles (`int a = 1, b = 2;`, `int *p, *q;`, declare first and assign later).
 
-## 💭 A simple form of reasoning
+## 💭 Plan-then-code reasoning
 
 - 📝 **Plan first:** each training program has a numbered `/* Plan: ... */` before its code, so the model learns to
   write its steps and then code from them (the idea behind "chain of thought").
@@ -135,8 +135,8 @@ These are not included here and keep their own licenses.
 ## 🔗 Related projects
 
 - [🎨 Diffusion Models: Image Generation and Captioning](https://github.com/laurelthejas/diffusion-models-image-generation-and-captioning):
-  fine-tunes Stable Diffusion for text-to-image and image-to-image, and trains a small text-to-image diffusion model
-  from scratch on Fashion-MNIST.
+  fine-tunes Stable Diffusion for text-to-image and image-to-image, and trains a text-to-image diffusion model from
+  scratch on Fashion-MNIST.
 - [🧩 Autoencoders: Feature Extraction, Colorization and Enhancement](https://github.com/laurelthejas/autoencoders-recognize-colorize-enhance):
   three image autoencoders trained from scratch on CIFAR-10, which recognize objects and find similar images, add
   color to grayscale images, and remove noise and blur.
